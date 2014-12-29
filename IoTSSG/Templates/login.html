@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>IoTSSG Web Portal</title>
+		<meta name="generator" content="Bootply" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
+		<!--[if lt IE 9]>
+			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<link href="css/styles.css" rel="stylesheet">
+	</head>
+	<body>
+<!--login modal-->
+<div id="loginModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+  <div class="modal-content">
+      <div class="modal-header">
+          <h1 class="text-center">IoTSSG Web Portal</h1>
+      </div>
+      <div class="modal-body">
+          <form class="form col-md-12 center-block" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+              {{ form.username.label_tag }} {{ form.username }}
+              {% if form.username.errors %}
+              <ol>
+                {% for error in form.username.errors %}
+                  <li><strong>{{ error|escape }}</strong></li>
+                {% endfor %}
+              </ol>
+              {% endif %}
+            </div>
+            <div class="form-group">
+              {{ form.password.label_tag }} {{ form.password }}
+              {% if form.password.errors %}
+              <ol>
+                {% for error in form.password.errors %}
+                  <li><strong>{{ error|escape }}</strong></li>
+                {% endfor %}
+              </ol>
+              {% endif %}
+            </div>
+            <div class="form-group">
+              <a href="/"><button class="btn btn-primary btn-lg btn-block">Sign In</button></a>
+             <!--  <input type="submit" value="POST" name="submit" /> -->
+              <span class="pull-right"><a href="#">Request Authentication</a></span>
+            </div>
+         </form>
+      </div>
+      <div class="modal-footer">
+          <div class="col-md-12">
+		  </div>	
+      </div>
+  </div>
+  </div>
+</div>
+	<!-- script references -->
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+	</body>
+</html>

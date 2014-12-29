@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<title>
+		IOTSSG Web Portal
+	</title>
+
+<head>
+		    <!-- Bootstrap core CSS -->
+    <link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet">
+    <script src="{{ STATIC_URL }}js/bootstrap.js"></script>
+
+    <!-- Custom styles for this template -->
+    <link href="{{ STATIC_URL }}css/main.css" rel="stylesheet">
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/font-awesome.min.css">
+
+    <script src="{{ STATIC_URL }}js/jquery.min.js"></script>
+	<script src="{{ STATIC_URL }}js/modernizr.custom.js"></script>
+	
+    <link href='http://fonts.googleapis.com/css?family=Oswald:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=EB+Garamond' rel='stylesheet' type='text/css'></script>
+{% block extrahead %}
+{% endblock %}
+<script>
+$(".alert").addClass("in").fadeOut(4500);
+
+/* swap open/close side menu icons */
+$('[data-toggle=collapse]').click(function(){
+    // toggle icon
+    $(this).find("i").toggleClass("glyphicon-chevron-right glyphicon-chevron-down");
+});
+</script>
+</head>
+
+<nav class="navbar navbar-inverse" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/home/">IOTSSG Web Portal</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/about/">About IoTSSG</a></li>
+            <li><a href="/meeting/">Meeting Center</a></li>
+            <li><a href="/programs/">Projects</a></li>
+            <li><a href="/roster/">Org Chart</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/analytics/">Analytics</a></li>
+            <li><a href="#">Help</a></li>
+          </ul>
+        </div>
+      </div>
+</nav>
+
+{% block content %}
+{% endblock %}
+</html>

@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block extrahead %}
+<link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet">
+<script src="{{ STATIC_URL }}js/bootstrap.js"></script>
+<script>
+$(window).load(function(){
+  $(".alert").addClass("in").fadeOut(4500);
+
+  /* swap open/close side menu icons */
+  $('[data-toggle=collapse]').click(function(){
+    // toggle icon
+    $(this).find("i").toggleClass("glyphicon-chevron-right glyphicon-chevron-down");
+});
+});
+</script>
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+<div class="row">
+  <div class="col-sm-1">
+      <!-- Left column -->
+      <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#createproject">
+  <strong><i class="glyphicon glyphicon-wrench"></i> New Project</strong>
+</button>
+<div class="modal" id="createproject" tabindex="-1" role="dialog" aria-labelledby="createprojectlabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="createprojectlabel">Create New Project</h4>
+      </div>
+      <form action="/programs/" method="POST">
+      {% csrf_token %} 
+      <div class="modal-body">
+        {% for field in form %}
+        {% if field.field.required %}
+        {% if field.errors %}
+          <div >
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><label for"{{ field.auto_id }}">{{ field.label_tag }}
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>{{ field }}
+         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  <span class="sr-only">Error:</span>{{ field.errors }}
+</div>
+
+{% else %}
+<label for"{{ field.auto_id }}">{{ field.label_tag }}
+{{ field }}
+{% endif %}
+        <br>
+        {% endif %}
+        {% endfor %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Project</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+      <hr>
+      <div class="input-group custom-search-form">
+    <input type="text" class="form-control" placeholder="
+Search...">
+    <span class="input-group-btn">
+    <button class="btn btn-default" type="button">
+        <i class="fa fa-search"></i>
+    </button>
+</span>
+</div>
+      
+      <ul class="list-unstyled">
+        <!-- Project drop down menu -->
+        <!-- Undefined -->
+        <li class="nav-header"> <a href="#" data-toggle="collapse" data-target="#UNDEFINED">
+          <h5>Undefined <i class="glyphicon glyphicon-chevron-right"></i></h5>
+          </a>
+            <ul class="list-unstyled collapse" id="UNDEFINED">
+              {% for program in programs %}
+              {% if program.phase == "UNDEFINED" %}
+                <li><a href="{% url 'program_list' %}{{ program.pk }}"><i class="glyphicon glyphicon-th"></i> {{ program.name }}</a></li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+        </li>
+      <!-- Pre CC -->
+        <li class="nav-header"> <a href="#" data-toggle="collapse" data-target="#PreCC">
+          <h5>Pre-CC <i class="glyphicon glyphicon-chevron-right"></i></h5>
+          </a>
+            <ul class="list-unstyled collapse" id="PreCC">
+              {% for program in programs %}
+              {% if program.phase == "PRE-CC" %}
+                <li><a href="{% url 'program_list' %}{{ program.pk }}"><i class="glyphicon glyphicon-th"></i> {{ program.name }}</a></li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+        </li>
+
+        <!-- CC  -->
+        <li class="nav-header"> <a href="#" data-toggle="collapse" data-target="#CC">
+          <h5>CC <i class="glyphicon glyphicon-chevron-right"></i></h5>
+          </a>
+            <ul class="list-unstyled collapse" id="CC">
+              {% for program in programs %}
+                {% if program.phase == "CC" %}
+                <li><a href="{% url 'program_list' %}{{ program.pk }}"><i class="glyphicon glyphicon-th"></i> {{ program.name }}</a></li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+        </li>
+
+        <!-- EC -->
+        <li class="nav-header"> <a href="#" data-toggle="collapse" data-target="#EC">
+          <h5>EC <i class="glyphicon glyphicon-chevron-right"></i></h5>
+          </a>
+            <ul class="list-unstyled collapse" id="EC">
+              {% for program in programs %}
+                {% if program.phase == "EC" %}
+                <li><a href="{% url 'program_list' %}{{ program.pk }}"><i class="glyphicon glyphicon-th"></i> {{ program.name }}</a></li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+        </li>
+
+        <li class="nav-header"> <a href="#" data-toggle="collapse" data-target="#FCS">
+          <h5>FCS <i class="glyphicon glyphicon-chevron-right"></i></h5>
+          </a>
+            <ul class="list-unstyled collapse" id="FCS">
+              {% for program in programs %}
+              {% if program.phase == "FCS" %}
+                <li><a href="{% url 'program_list' %}{{ program.pk }}"><i class="glyphicon glyphicon-th"></i> {{ program.name }}</a></li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+        </li>
+
+        <!-- Archived -->
+        <li class="nav-header"> <a href="#" data-toggle="collapse" data-target="#ARCHIVED">
+          <h5>Archived <i class="glyphicon glyphicon-chevron-right"></i></h5>
+          </a>
+            <ul class="list-unstyled collapse" id="ARCHIVED">
+              {% for program in programs %}
+                {% if program.phase == "ARCHIVED" %}
+                <li><a href="{% url 'program_list' %}{{ program.pk }}"><i class="glyphicon glyphicon-th"></i> {{ program.name }}</a></li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+        </li>
+      </ul>
+
+    </div>
+
+    <div class="col-sm-9">
+      {% block display %}
+      
+      {% endblock %}
+    </div>
+  </div>
+</div>
+    {% endblock %}
