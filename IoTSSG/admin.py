@@ -5,4 +5,5 @@ admin.site.register(Program)
 admin.site.register(Allocation)
 admin.site.register(Bug)
 admin.site.register(Employee)
-## make a change
+admin.site.register(Department)
+## make a change some more changes

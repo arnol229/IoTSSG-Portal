@@ -8,7 +8,7 @@ class Employee(models.Model):
 	name = models.CharField(max_length=32)
 	last_name = models.CharField(max_length=32)
 	first_name = models.CharField(max_length=32)
-
+	favorite_color = models.CharField(max_length=32,default="red")
 	emptype = models.CharField(max_length=16)
 	job_title = models.CharField(max_length=64)
 	direct_mgr = models.CharField(max_length=16)
@@ -21,7 +21,7 @@ class Employee(models.Model):
 	department = models.CharField(max_length=16)
 
 	def __unicode__(self):
-		return str(self.last_name) +", " + str(self.first_name)
+		return self.user_id# str(self.last_name) +", " + str(self.first_name)
 
 class Program(models.Model):
 	# Required Fields

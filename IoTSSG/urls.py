@@ -6,9 +6,9 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'IoTSSG.views.landing', name='landing'),
-    url(r'^home/$', 'IoTSSG.views.home', name='home'),
+    url(r'^$', 'IoTSSG.views.home', name='home'),
 
-    url(r'^$', 'IoTSSG.views.the_gate', name='login'),
+    url(r'^login/$', 'IoTSSG.views.the_gate', name='login'),
 
     url(r'^programs/$', 'IoTSSG.views.program_list',name='program_list'),
     url(r'^programs/retrieve/$','IoTSSG.views.retrieve_programs',name='retrieve_programs'),

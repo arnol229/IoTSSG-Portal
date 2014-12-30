@@ -114,6 +114,7 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('director', self.gf('django.db.models.fields.related.ForeignKey')(related_name='+', to=orm['IoTSSG.Employee'])),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=255)),
         ))
         db.send_create_signal(u'IoTSSG', ['Department'])
 
@@ -170,6 +171,7 @@ class Migration(SchemaMigration):
         },
         u'IoTSSG.department': {
             'Meta': {'object_name': 'Department'},
+            'description': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'director': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'+'", 'to': u"orm['IoTSSG.Employee']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255'})

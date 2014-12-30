@@ -30,17 +30,19 @@ def landing(request):
 
 	return render(request, 'landing.html', {})
 
-@login_required(login_url='/')
+@login_required(login_url='login/')
 def home(request):
 	logging.error('processing home...')
 	current_date = datetime.now().strftime('%m/%d/%y')
 	current_time = datetime.now().strftime('%I:%M')
+	user_stuff = {}
 	context = {'message':'Welcome to the IoTSSG home page.',
 				'current_time':current_time,
-				'current_date':current_date}
+				'current_date':current_date,
+				'username':request.user.username,}
 	return render(request, 'home.html', context)
 
-@login_required(login_url='/')
+@login_required(login_url='login/')
 def program_list(request):
 	def pkg_autocomplete(prog_list):
 		search_list = []
@@ -84,7 +86,7 @@ def program_list(request):
 
 	return render(request,"program_list.html", context)
 
-@login_required(login_url='/')
+@login_required(login_url='login/')
 def retrieve_programs(request):
 	logging.error('processing retrieve_program...')
 	if request.method == "GET":
@@ -106,7 +108,7 @@ def retrieve_programs(request):
 	else:
 		raise Http404
 
-@login_required(login_url='/')
+@login_required(login_url='login/')
 def program(request, program_id):
 	logging.error('processing program...')
 	try:
@@ -119,15 +121,15 @@ def program(request, program_id):
 		logging.error(str(e))
 		raise Http404
 
-@login_required(login_url='/')
+@login_required(login_url='login/')
 def community(request):
 	return render(request, 'community.html', {'message':'Community page.'})
 
-@login_required(login_url='/')
+@login_required(login_url='login/')
 def roster(request):
 	return render(request, 'roster.html', {'employees':Employee.objects.all()})
 
-@login_required(login_url='/')
+@login_required(login_url='login/')
 def meeting(request):
 	context ={}
 	return render(request, 'meeting.html', context)
@@ -146,7 +148,7 @@ def the_gate(request):
 					login(request, user)
 					logging.error('user successfully logged in!')
 					context = {'message':'successful login!'}
-					return render(request, 'home.html', context)
+					return HttpResponseRedirect('/')
 				else:
 					raise Http404
 		else:

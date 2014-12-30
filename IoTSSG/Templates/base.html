@@ -40,17 +40,17 @@ $('[data-toggle=collapse]').click(function(){
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/home/">IOTSSG Web Portal</a>
+          <a class="navbar-brand" href="{% url 'IoTSSG.views.home' %}">IOTSSG Web Portal</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="/about/">About IoTSSG</a></li>
-            <li><a href="/meeting/">Meeting Center</a></li>
-            <li><a href="/programs/">Projects</a></li>
-            <li><a href="/roster/">Org Chart</a></li>
-            <li><a href="/community/">Community</a></li>
-            <li><a href="/analytics/">Analytics</a></li>
-            <li><a href="#">Help</a></li>
+            <li><a href="{% url 'IoTSSG.views.about' %}">About IoTSSG</a></li>
+            <li><a href="{% url 'IoTSSG.views.meeting' %}">Meeting Center</a></li>
+            <li><a href="{% url 'IoTSSG.views.program_list' %}">Programs</a></li>
+            <li><a href="{% url 'IoTSSG.views.roster' %}">Org Chart</a></li>
+            <li><a href="{% url 'IoTSSG.views.community' %}">Community</a></li>
+            <li><a href="{% url 'IoTSSG.views.analytics' %}">Analytics</a></li>
+            <li><a href="{% url 'IoTSSG.views.home' %}">Help</a></li>
           </ul>
         </div>
       </div>

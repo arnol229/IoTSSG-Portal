@@ -15,6 +15,7 @@ class Migration(SchemaMigration):
             ('name', self.gf('django.db.models.fields.CharField')(max_length=32)),
             ('last_name', self.gf('django.db.models.fields.CharField')(max_length=32)),
             ('first_name', self.gf('django.db.models.fields.CharField')(max_length=32)),
+            ('favorite_color', self.gf('django.db.models.fields.CharField')(default='red', max_length=32)),
             ('emptype', self.gf('django.db.models.fields.CharField')(max_length=16)),
             ('job_title', self.gf('django.db.models.fields.CharField')(max_length=64)),
             ('direct_mgr', self.gf('django.db.models.fields.CharField')(max_length=16)),
@@ -114,6 +115,7 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('director', self.gf('django.db.models.fields.related.ForeignKey')(related_name='+', to=orm['IoTSSG.Employee'])),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=255)),
         ))
         db.send_create_signal(u'IoTSSG', ['Department'])
 
@@ -170,6 +172,7 @@ class Migration(SchemaMigration):
         },
         u'IoTSSG.department': {
             'Meta': {'object_name': 'Department'},
+            'description': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'director': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'+'", 'to': u"orm['IoTSSG.Employee']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255'})
@@ -181,6 +184,7 @@ class Migration(SchemaMigration):
             'department': ('django.db.models.fields.CharField', [], {'max_length': '16'}),
             'direct_mgr': ('django.db.models.fields.CharField', [], {'max_length': '16'}),
             'emptype': ('django.db.models.fields.CharField', [], {'max_length': '16'}),
+            'favorite_color': ('django.db.models.fields.CharField', [], {'default': "'red'", 'max_length': '32'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '32'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'job_title': ('django.db.models.fields.CharField', [], {'max_length': '64'}),
