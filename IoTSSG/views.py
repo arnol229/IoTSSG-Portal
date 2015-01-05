@@ -109,10 +109,10 @@ def retrieve_programs(request):
 		raise Http404
 
 @login_required(login_url='login/')
-def program(request, program_id):
+def program(request, program_name):
 	logging.error('processing program...')
 	try:
-		program = Program.objects.get(pk=program_id)
+		program = Program.objects.get(name=program_name)
 		programs = Program.objects.all()
 		context = {'program':program,
 					'programs':programs}

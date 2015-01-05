@@ -12,7 +12,7 @@ urlpatterns = patterns('',
 
     url(r'^programs/$', 'IoTSSG.views.program_list',name='program_list'),
     url(r'^programs/retrieve/$','IoTSSG.views.retrieve_programs',name='retrieve_programs'),
-    url(r'^programs/(?P<program_id>\w+)/$', 'IoTSSG.views.program', name='program'),
+    url(r'^programs/(?P<program_name>\w+)/$', 'IoTSSG.views.program', name='program'),
     url(r'^meeting/$', 'IoTSSG.views.meeting', name='meeting'),
     url(r'^roster/$', 'IoTSSG.views.roster', name='roster'),
     url(r'^community/', 'IoTSSG.views.community', name='community'),

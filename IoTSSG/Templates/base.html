@@ -1,26 +1,5 @@
-<!DOCTYPE html>
-<html>
-	<title>
-		IOTSSG Web Portal
-	</title>
 
-<head>
-		    <!-- Bootstrap core CSS -->
-    <link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet">
-    <script src="{{ STATIC_URL }}js/bootstrap.js"></script>
-
-    <!-- Custom styles for this template -->
-    <link href="{{ STATIC_URL }}css/main.css" rel="stylesheet">
-	<link rel="stylesheet" href="{{ STATIC_URL }}css/font-awesome.min.css">
-
-    <script src="{{ STATIC_URL }}js/jquery.min.js"></script>
-	<script src="{{ STATIC_URL }}js/modernizr.custom.js"></script>
-	
-    <link href='http://fonts.googleapis.com/css?family=Oswald:400,300,700' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=EB+Garamond' rel='stylesheet' type='text/css'></script>
-{% block extrahead %}
-{% endblock %}
-<script>
+{% block extrahead %} {% endblock %} <script>
 $(".alert").addClass("in").fadeOut(4500);
 
 /* swap open/close side menu icons */
@@ -29,33 +8,62 @@ $('[data-toggle=collapse]').click(function(){
     $(this).find("i").toggleClass("glyphicon-chevron-right glyphicon-chevron-down");
 });
 </script>
-</head>
 
-<nav class="navbar navbar-inverse" role="navigation">
-      <div class="container-fluid">
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="{% url 'IoTSSG.views.home' %}">IOTSSG Web Portal</a>
+            <button class="navbar-toggle" data-target=".navbar-collapse"
+            data-toggle="collapse" type="button"><span class="sr-only">Toggle
+            navigation</span> <span class="icon-bar"></span> <span class=
+            "icon-bar"></span> <span class="icon-bar"></span></button>
+            <a class="navbar-brand" href=
+            "{% url 'IoTSSG.views.home' %}">IOTSSG Web Portal</a>
         </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="{% url 'IoTSSG.views.about' %}">About IoTSSG</a></li>
-            <li><a href="{% url 'IoTSSG.views.meeting' %}">Meeting Center</a></li>
-            <li><a href="{% url 'IoTSSG.views.program_list' %}">Programs</a></li>
-            <li><a href="{% url 'IoTSSG.views.roster' %}">Org Chart</a></li>
-            <li><a href="{% url 'IoTSSG.views.community' %}">Community</a></li>
-            <li><a href="{% url 'IoTSSG.views.analytics' %}">Analytics</a></li>
-            <li><a href="{% url 'IoTSSG.views.home' %}">Help</a></li>
-          </ul>
-        </div>
-      </div>
-</nav>
 
-{% block content %}
-{% endblock %}
-</html>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="{% url 'IoTSSG.views.about' %}">About
+                    IoTSSG</a>
+                </li>
+
+
+                <li>
+                    <a href="{% url 'IoTSSG.views.meeting' %}">Meeting
+                    Center</a>
+                </li>
+
+
+                <li>
+                    <a href=
+                    "{% url 'IoTSSG.views.program_list' %}">Programs</a>
+                </li>
+
+
+                <li>
+                    <a href="{% url 'IoTSSG.views.roster' %}">Org
+                    Chart</a>
+                </li>
+
+
+                <li>
+                    <a href=
+                    "{% url 'IoTSSG.views.community' %}">Community</a>
+                </li>
+
+
+                <li>
+                    <a href=
+                    "{% url 'IoTSSG.views.analytics' %}">Analytics</a>
+                </li>
+
+
+                <li>
+                    <a href="{% url 'IoTSSG.views.home' %}">Help</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{% block content %} {% endblock %}
