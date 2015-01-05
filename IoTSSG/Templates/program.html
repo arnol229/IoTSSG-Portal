@@ -2,6 +2,28 @@
 {% block extrahead %}
 <link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet">
 <script src="{{ STATIC_URL }}js/bootstrap.js"></script>
+<script src="{{ STATIC_URL }}js/redirect.js"></script>
+<link href="{{ STATIC_URL }}css/jquery-ui.min.css" rel="stylesheet">
+<script src="{{ STATIC_URL }}js/jquery.min.js"></script>
+<script src="{{ STATIC_URL }}js/jquery-ui.min.js"></script>
+<script>
+$(window).load(function(){
+  $(".alert").addClass("in").fadeOut(4500);
+
+  /* swap open/close side menu icons */
+  $('[data-toggle=collapse]').click(function(){
+    // toggle icon
+    $(this).find("i").toggleClass("glyphicon-chevron-right glyphicon-chevron-down");
+});
+  var search_list = {{ search_list|safe }}
+  $("#search").autocomplete({
+    source: search_list,
+    minLength: 2,
+    appendTo:"#autoComplete",
+  });
+
+});
+</script> 
 {% endblock %}
 {% block display %}
 <div class="container-fluid">

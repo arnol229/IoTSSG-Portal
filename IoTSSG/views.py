@@ -10,6 +10,13 @@ from forms import ProgramForm, LoginForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 
+def pkg_autocomplete():
+		search_list = []
+		programs = Program.objects.all()
+		for program in programs:
+			search_list.append(str(program))
+		return search_list
+
 def landing(request):
 	logging.error('landing page processing')
 	if request.METHOD =="POST":
@@ -44,11 +51,6 @@ def home(request):
 
 @login_required(login_url='login/')
 def program_list(request):
-	def pkg_autocomplete(prog_list):
-		search_list = []
-		for program in prog_list:
-			search_list.append(str(program))
-		return search_list
 	logging.error('getting program list')
 	program_stage = request.GET.get('program_stage', None)
 	programs = Program.objects.all()
@@ -62,7 +64,7 @@ def program_list(request):
 			attempt = "success"
 			form = ProgramForm()
 			context = {"programs": programs,
-				"search_list":pkg_autocomplete(programs),
+				"search_list":pkg_autocomplete(),
 				"form":form,
 				"attempt":attempt}
 
@@ -71,7 +73,7 @@ def program_list(request):
 			logging.error('invalid')
 			attempt = 'error'
 			context = {"programs": programs,
-				"search_list":pkg_autocomplete(programs),
+				"search_list":pkg_autocomplete(),
 				"form":form,
 				"attempt":attempt}
 			return render(request,"program_list.html", context)
@@ -81,7 +83,7 @@ def program_list(request):
 
 	form = ProgramForm()
 	context = {"programs": programs,
-				"search_list":pkg_autocomplete(programs),
+				"search_list":pkg_autocomplete(),
 				"form":form,}
 
 	return render(request,"program_list.html", context)
@@ -115,7 +117,8 @@ def program(request, program_name):
 		program = Program.objects.get(name=program_name)
 		programs = Program.objects.all()
 		context = {'program':program,
-					'programs':programs}
+					'programs':programs,
+					"search_list":pkg_autocomplete(),}
 		return render(request, 'program.html', context)
 	except Exception as e:
 		logging.error(str(e))

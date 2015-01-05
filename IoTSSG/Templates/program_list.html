@@ -1,8 +1,11 @@
 {% extends 'base.html' %} 
 {% block extrahead %}
 <link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}css/jquery-ui.min.css" rel="stylesheet">
 <script src="{{ STATIC_URL }}js/bootstrap.js"></script>
 <script src="{{ STATIC_URL }}js/jquery.min.js"></script>
+<script src="{{ STATIC_URL }}js/jquery-ui.min.js"></script>
+<script src="{{ STATIC_URL }}js/redirect.js"></script>
 <script>
 $(window).load(function(){
   $(".alert").addClass("in").fadeOut(4500);
@@ -12,6 +15,13 @@ $(window).load(function(){
     // toggle icon
     $(this).find("i").toggleClass("glyphicon-chevron-right glyphicon-chevron-down");
 });
+  var search_list = {{ search_list|safe }}
+  $("#search").autocomplete({
+    source: search_list,
+    minLength: 2,
+    appendTo:"#autoComplete",
+  });
+
 });
 </script> 
 {% endblock %} 
@@ -45,38 +55,24 @@ $(window).load(function(){
                             {% csrf_token %}
 
                             <div class="modal-body">
-                                {% for field in form %} {% if
-                                field.field.required %} {% if field.errors %}
+                                {% for field in form %} {% if field.field.required %} {% if field.errors %}
 
                                 <div>
-                                    <span class=
-                                    "glyphicon glyphicon-exclamation-sign">span&gt;<label>{field.label_tag
-                                    }} <span class=
-                                    "glyphicon glyphicon-exclamation-sign">span&gt;{{
-                                    field }} <span class=
-                                    "glyphicon glyphicon-exclamation-sign">span&gt;
-                                    <span class=
-                                    "sr-only">Error:</span>{field.errors
-                                    }}</span></span></label></span>
+                                    <span class="glyphicon glyphicon-exclamation-sign"><label>{{ field.label_tag }}</label>
+                                    {{ field }}
+                                    <span class="sr-only">Error:</span>{{ field.errors }}</span></span></label></span>
                                 </div>
-                                <span class=
-                                "glyphicon glyphicon-exclamation-sign">{% else %}
-                                <label>{{ field.label_tag }} {{ field }} {%
-                                endif %}<br>
+                                {% else %}
+                                <label>{{ field.label_tag }} {{ field }} {% endif %}<br>
                                 {% endif %} {% endfor %}</label></span>
                             </div>
-                            <span class=
-                            "glyphicon glyphicon-exclamation-sign"><label></label></span>
 
                             <div class="modal-footer">
-                                <span class=
-                                "glyphicon glyphicon-exclamation-sign"><label><button class="btn btn-default"
-                                data-dismiss="modal" type="button"><span class=
-                                "glyphicon glyphicon-exclamation-sign"><label>Cancel</label>
+                                <button class="btn btn-default"
+                                data-dismiss="modal" type="button">
+                                Cancel</button>
                                 <button class="btn btn-primary" type=
-                                "submit"><span class=
-                                "glyphicon glyphicon-exclamation-sign">Save
-                                Project</span></button></span></button></label></span>
+                                "submit">Save Project</button>
                             </div>
                         </form>
                     </div>
@@ -86,16 +82,12 @@ $(window).load(function(){
 
             <hr>
 
-
             <div class="input-group custom-search-form">
-                <input class="form-control" placeholder=" Search..." type=
-                "text"> <span class="input-group-btn"><button class=
-                "btn btn-default" type="button"><span class=
-                "input-group-btn fa fa-search" style=
-                "font-style: italic"></span></button></span>
+                <input class="form-control" placeholder=" Search..." type="text" id="search"> <span class="input-group-btn"><button class="btn btn-default" type="button" onclick="redirect()"><span class="input-group-btn fa fa-search" style="font-style: italic"></span></button></span>
             </div>
 
-
+<div id="autoComplete">
+</div>
             <ul class="list-unstyled">
                 <!-- Project drop down menu -->
                 <!-- Undefined -->
@@ -115,7 +107,7 @@ $(window).load(function(){
                         </li>
 
 
-                        <li style="list-style: none">{% endif %} {% endfor %}</li>
+                        {% endif %} {% endfor %}
                     </ul>
                 </li>
                 <!-- Pre CC -->
@@ -135,7 +127,7 @@ $(window).load(function(){
                         </li>
 
 
-                        <li style="list-style: none">{% endif %} {% endfor %}</li>
+                        {% endif %} {% endfor %}
                     </ul>
                 </li>
                 <!-- CC  -->
@@ -155,7 +147,7 @@ $(window).load(function(){
                             <i class="glyphicon glyphicon-th"></i> {{ program.name }}</a>
                         </li>
 
-                        <li style="list-style: none">{% endif %} {% endfor %}</li>
+                        {% endif %} {% endfor %}
                     </ul>
                 </li>
                 <!-- EC -->
@@ -175,7 +167,7 @@ $(window).load(function(){
                         </li>
 
 
-                        <li style="list-style: none">{% endif %} {% endfor %}</li>
+                        {% endif %} {% endfor %}
                     </ul>
                 </li>
 
@@ -194,7 +186,7 @@ $(window).load(function(){
                         </li>
 
 
-                        <li style="list-style: none">{% endif %} {% endfor %}</li>
+                        {% endif %} {% endfor %}
                     </ul>
                 </li>
                 <!-- Archived -->
@@ -215,7 +207,7 @@ $(window).load(function(){
                         </li>
 
 
-                        <li style="list-style: none">{% endif %} {% endfor %}</li>
+                        {% endif %} {% endfor %}
                     </ul>
                 </li>
             </ul>
@@ -234,17 +226,24 @@ $(window).load(function(){
                   <tr>
                       <th data-field="Name">Name</th>
                       <th data-field="Clarity-ID">Clarity ID</th>
-                      <th data-field="Status">Status</th>
+                      <th data-field="Status">Health</th>
                       <th data-field="Phase">Phase</th>
                   </tr>
                   {% for program in programs %}
-                  <tr id="{{ program.name }}">
+                  <tr id="{{ program.name }}"
+                  {% if program.health == 'RED' %}
+                  class="danger">
+                  {% elif program.health == 'WHITE' %}
+                  >
+                  {% elif program.health == 'GREEN' %}
+                  class="success">
+                  {% endif %}
                       <td><a href=
                             "{% url 'program_list' %}{{ program.name }}">
                             <i class="glyphicon glyphicon-th"></i>
                             {{ program.name }}</a></td>
                       <td>{{ program.clarity_id }}</td>
-                      <td>{{ program.status }}</td>
+                      <td>{{ program.health }}</td>
                       <td>{{ program.phase }}</td>
                   </tr>
                   {% endfor %}

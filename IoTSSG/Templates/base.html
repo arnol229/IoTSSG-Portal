@@ -1,5 +1,26 @@
+<!DOCTYPE html>
+<html>
+ <title>
+   IOTSSG Web Portal
+ </title>
 
-{% block extrahead %} {% endblock %} <script>
+<head>
+       <!-- Bootstrap core CSS -->
+    <link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet">
+    <script src="{{ STATIC_URL }}js/bootstrap.js"></script>
+
+    <!-- Custom styles for this template -->
+    <link href="{{ STATIC_URL }}css/main.css" rel="stylesheet">
+ <link rel="stylesheet" href="{{ STATIC_URL }}css/font-awesome.min.css">
+
+    <script src="{{ STATIC_URL }}js/jquery.min.js"></script>
+ <script src="{{ STATIC_URL }}js/modernizr.custom.js"></script>
+ 
+    <link href='http://fonts.googleapis.com/css?family=Oswald:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=EB+Garamond' rel='stylesheet' type='text/css'></script>
+{% block extrahead %}
+{% endblock %}
+<script>
 $(".alert").addClass("in").fadeOut(4500);
 
 /* swap open/close side menu icons */
@@ -8,6 +29,7 @@ $('[data-toggle=collapse]').click(function(){
     $(this).find("i").toggleClass("glyphicon-chevron-right glyphicon-chevron-down");
 });
 </script>
+</head>
 
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
