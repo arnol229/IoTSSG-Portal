@@ -7,12 +7,27 @@
 		<meta name="generator" content="Bootply" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/jquery-ui.min.css" rel="stylesheet">
+<script src="{{ STATIC_URL }}js/jquery.min.js"></script>
+<script src="{{ STATIC_URL }}js/jquery-ui.min.js"></script>
+    <script src="{{ STATIC_URL }}js/velocity.min.js"></script>
 		<!--[if lt IE 9]>
 			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
 		<link href="css/styles.css" rel="stylesheet">
+    <script>
+    $(document).ready(function(){
+      $('#errorbox').velocity("callout.shake");
+    })
+    </script>
 	</head>
 	<body>
+    <!-- Error Message -->
+    {% if errors %}
+    <div id="errorbox" class="alert alert-danger" role="alert">
+        <li><strong>{{ errors|escape }}</strong></li>
+    </div>
+    {% endif %}
 <!--login modal-->
 <div id="loginModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">

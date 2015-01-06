@@ -37,7 +37,7 @@ def landing(request):
 
 	return render(request, 'landing.html', {})
 
-@login_required(login_url='login/')
+@login_required(login_url='/login/')
 def home(request):
 	logging.error('processing home...')
 	current_date = datetime.now().strftime('%m/%d/%y')
@@ -49,7 +49,7 @@ def home(request):
 				'username':request.user.username,}
 	return render(request, 'home.html', context)
 
-@login_required(login_url='login/')
+@login_required(login_url='/login/')
 def program_list(request):
 	logging.error('getting program list')
 	program_stage = request.GET.get('program_stage', None)
@@ -88,7 +88,7 @@ def program_list(request):
 
 	return render(request,"program_list.html", context)
 
-@login_required(login_url='login/')
+@login_required(login_url='/login/')
 def retrieve_programs(request):
 	logging.error('processing retrieve_program...')
 	if request.method == "GET":
@@ -110,7 +110,7 @@ def retrieve_programs(request):
 	else:
 		raise Http404
 
-@login_required(login_url='login/')
+@login_required(login_url='/login/')
 def program(request, program_name):
 	logging.error('processing program...')
 	try:
@@ -124,15 +124,15 @@ def program(request, program_name):
 		logging.error(str(e))
 		raise Http404
 
-@login_required(login_url='login/')
+@login_required(login_url='/login/')
 def community(request):
 	return render(request, 'community.html', {'message':'Community page.'})
 
-@login_required(login_url='login/')
+@login_required(login_url='/login/')
 def roster(request):
 	return render(request, 'roster.html', {'employees':Employee.objects.all()})
 
-@login_required(login_url='login/')
+@login_required(login_url='/login/')
 def meeting(request):
 	context ={}
 	return render(request, 'meeting.html', context)
@@ -154,16 +154,23 @@ def the_gate(request):
 					return HttpResponseRedirect('/')
 				else:
 					raise Http404
+			else:
+				context = {"form":form,
+							"errors":"User not found!"}
+				logging.error("user was none")
+				return render(request, 'login.html', context)
 		else:
 			context = {"form":LoginForm()}
 			return render(request, 'login.html', context)
 	context = {"form":LoginForm()}
 	return render(request, 'login.html', context)
 
+@login_required(login_url='/login/')
 def analytics(request):
 	context = {}
 	return render(request, 'analytics.html', context)
 
+@login_required(login_url='/login/')
 def about(request):
 	context = {}
 	return render(request, 'about.html', context)
