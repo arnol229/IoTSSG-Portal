@@ -8,7 +8,7 @@ from models import Program, Employee
 import json
 from forms import ProgramForm, LoginForm
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 def pkg_autocomplete():
 		search_list = []
@@ -174,6 +174,10 @@ def analytics(request):
 def about(request):
 	context = {}
 	return render(request, 'about.html', context)
+
+def log_out(request):
+	logout(request)
+	return HttpResponseRedirect('/login/')
 
 # def upload_file(request):
 # 	def handle_upload(f):

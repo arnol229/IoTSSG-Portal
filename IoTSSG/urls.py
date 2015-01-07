@@ -18,7 +18,7 @@ urlpatterns = patterns('',
     url(r'^community/', 'IoTSSG.views.community', name='community'),
     url(r'^analytics/', 'IoTSSG.views.analytics', name='analytics'),
     url(r'^about/', 'IoTSSG.views.about', name='about'),
-    
+    url(r'^log_out/', 'IoTSSG.views.log_out', name='log_out'),
     # url(r'^IoTSSG/', include('IoTSSG.foo.urls')),
 
     # Uncomment the next line to enable the admin:

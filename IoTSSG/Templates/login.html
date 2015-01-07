@@ -8,20 +8,68 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ STATIC_URL }}css/jquery-ui.min.css" rel="stylesheet">
+    <script src="{{ STATIC_URL }}js/velocity.min.js"></script>
+    <script src="{{ STATIC_URL }}js/velocity.ui.js"></script>
 <script src="{{ STATIC_URL }}js/jquery.min.js"></script>
 <script src="{{ STATIC_URL }}js/jquery-ui.min.js"></script>
-    <script src="{{ STATIC_URL }}js/velocity.min.js"></script>
 		<!--[if lt IE 9]>
 			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
-		<link href="css/styles.css" rel="stylesheet">
-    <script>
-    $(document).ready(function(){
-      $('#errorbox').velocity("callout.shake");
-    })
-    </script>
+<script>
+function sortNumber(a,b) {
+return a - b;}
+
+$(document).ready(function(){
+var $body = $('body');
+  var nums = [Math.floor((Math.random() * 100) + 1),
+              Math.floor((Math.random() * 100) + 1),
+              Math.floor((Math.random() * 100) + 1),
+              Math.floor((Math.random() * 100) + 1),
+             ];
+  nums.sort(sortNumber);
+  var loading = [
+      { elements: $body, properties: { width: nums[0] + '%' } },
+      { elements: $body, properties: { width: nums[1] + '%' } },
+      { elements: $body, properties: { width: nums[2] + '%' } },
+      { elements: $body, properties: { width: nums[3] + '%' } },
+      { elements: $body, properties: { width: '100%' } },
+      { elements: $body, properties: { height: '100%' }, options: { 
+        complete: function () { 
+          console.log('success');
+          $('html').css({ background: 'black' });
+          $('#mainContainer').velocity('transition.slideUpIn');
+          // $('img').velocity( 'transition.flipYIn' );
+          // $('html').css({ background: '#fff' });
+        }
+      }
+    }
+  ];
+  console.log('running loading sequence');
+  Velocity.RunSequence(loading);
+  })
+</script>
+<script>
+    // $(document).ready(function(){
+    //   $('#errorbox').velocity("callout.shake");
+    // })
+</script>
+<style>
+body {
+  font-size: 1.5em;
+  color: #222;
+  background: #fff;
+  height: .25rem;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  position: absolute;
+  width: 0%;
+}
+</style>
 	</head>
+
 	<body>
+    <div id='mainContainer'>
     <!-- Error Message -->
     {% if errors %}
     <div id="errorbox" class="alert alert-danger" role="alert">
@@ -72,8 +120,6 @@
   </div>
   </div>
 </div>
-	<!-- script references -->
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
+	</div>
 	</body>
 </html>
