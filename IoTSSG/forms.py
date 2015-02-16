@@ -6,14 +6,15 @@ class LoginForm(forms.Form):
 	#Form used to login to the main site
 	#This is using Crispy-Forms module
 	username = forms.CharField(
-		label = "Username: ",
+		label = "Username ",
 		max_length = 16,
 		required = True,
 		)
 	password = forms.CharField(
-		label = "Password: ",
+		label = "Password ",
 		max_length = 32,
 		required = True,
+		widget=forms.PasswordInput(),
 		)
 
 class ProgramForm(forms.ModelForm):

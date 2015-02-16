@@ -9,6 +9,8 @@ import json
 from forms import ProgramForm, LoginForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+import requests
+from requests_ntlm import HttpNtlmAuth
 
 def pkg_autocomplete():
 		search_list = []
@@ -144,8 +146,35 @@ def the_gate(request):
 		if form.is_valid():
 			form_data = form.cleaned_data
 			logging.error('authenticating user...')
-			# CEC AD API CALL HERE!!!
-			user = authenticate(username=form_data['username'], password=form_data['password'])
+
+			# SSO login against Cig portal
+			# s = requests.Session()
+			# logging.error('logging in with username: '+r'CISCO\\'+form_data['username'])
+			# s.auth = HttpNtlmAuth(r'CISCO\\'+form_data['username'],form_data['password'])
+			# authResponse = s.get('http://wwwin-cig.cisco.com/projects.pl').reason
+			# logging.error(authResponse)
+
+			user = authenticate(username=form_data['username'],password=form_data['password'])
+			# if authResponse == 'OK':
+				## auth success
+				# logging.error('user is valid.')
+				#use username login with generic password thats registered with the site
+				#each employee in the BU has an account with this setup
+				# if form_data['username'] == 'deryarno':
+					# user = authenticate(username='Admin', password='iotssg')
+				# else:
+					# user = authenticate(username='Employee', password='iotssg')
+
+			# elif authResponse == 'Unauthorized':
+				#not authorized to view cig portal.
+				# logging.error('authentication error. not authorized')
+				# user = None
+
+			# else:
+				#random other error?
+				# logging.error(authResponse)
+				# user = None
+
 			if user is not None:
 				if user.is_active:
 					login(request, user)
