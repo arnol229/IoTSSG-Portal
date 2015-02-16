@@ -154,6 +154,7 @@ def the_gate(request):
 			# authResponse = s.get('http://wwwin-cig.cisco.com/projects.pl').reason
 			# logging.error(authResponse)
 
+			## Deryarno SKIUMAHr4h works here.
 			user = authenticate(username=form_data['username'],password=form_data['password'])
 			# if authResponse == 'OK':
 				## auth success

@@ -8,7 +8,6 @@ class Employee(models.Model):
 	name = models.CharField(max_length=32)
 	last_name = models.CharField(max_length=32)
 	first_name = models.CharField(max_length=32)
-	favorite_color = models.CharField(max_length=32,default="red")
 	emptype = models.CharField(max_length=16)
 	job_title = models.CharField(max_length=64)
 	direct_mgr = models.CharField(max_length=16)
@@ -49,10 +48,17 @@ class Program(models.Model):
 	owner = models.ForeignKey(Employee,related_name='+',blank=True,null=True)
 	phase = models.CharField(max_length=16,default="UNDEFINED",choices=PHASE_CHOICES)#include options to choose from
 
-	class Meta:
-		verbose_name_plural = "Programs"
 	def __unicode__(self):
 		return self.name
+
+	def get_current_allocation_total(self):
+		return Allocation.objects.filter(program=self).aggregate(models.Sum('fte_total')).get('fte_total__sum', 0.00)
+
+	def get_allocation_totals(self):
+		return Allocation.objects.filter(program=self).values('fiscal_month').annotate(models.Sum('fte_total')).order_by('fiscal_month')
+
+	def get_active_roster(self):
+		return Allocation.objects.values('fiscal_month').annotate(models.Sum('fte_total')).get('fte_total__sum', 0.00)
 
 	def get_fields(self):
 		return [(field.name, field.value_to_string(self)) for field in Program._meta.fields]

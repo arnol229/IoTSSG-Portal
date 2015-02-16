@@ -4,7 +4,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
+
     # url(r'^$', 'IoTSSG.views.landing', name='landing'),
     url(r'^$', 'IoTSSG.views.home', name='home'),
 
