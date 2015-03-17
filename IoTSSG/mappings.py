@@ -1,8 +1,18 @@
 dep_map = {
-	'srirbhaga':"IoT/PM",
-    'rhouse':"NE",
+	## Sriram
+	'sribhaga':"IoT Central",
+	## Richard House
+    'rhouse':"Network Engineering - Hardware",
+    ## Elango
     'eganesan':"Architecture",
-    'kip':"Director",
-    'separham':'A&M',
-    'rosoderb':'kip',
+    ## Kip Compton
+    'kip':"IoT Central",
+    ##Sean Parham
+    'separham':'CSS',
+    ## Jason Chen
+    'jaschen':'Network Engineering - Software',
+    ## Vikas Butaney
+    "vbutaney":"Product Management",
+    ## Kip Admin
+    "dihughes":"IoT Central"
 }

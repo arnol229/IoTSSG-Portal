@@ -12,36 +12,42 @@ class Migration(SchemaMigration):
         db.create_table(u'IoTSSG_employee', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('user_id', self.gf('django.db.models.fields.CharField')(max_length=16)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=32)),
-            ('last_name', self.gf('django.db.models.fields.CharField')(max_length=32)),
-            ('first_name', self.gf('django.db.models.fields.CharField')(max_length=32)),
+            ('portrait', self.gf('django.db.models.fields.files.ImageField')(default='images/portraits/default.jpg', max_length=100)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=64, null=True, blank=True)),
+            ('last_name', self.gf('django.db.models.fields.CharField')(max_length=32, null=True, blank=True)),
+            ('first_name', self.gf('django.db.models.fields.CharField')(max_length=32, null=True, blank=True)),
             ('emptype', self.gf('django.db.models.fields.CharField')(max_length=16)),
-            ('job_title', self.gf('django.db.models.fields.CharField')(max_length=64)),
+            ('job_title', self.gf('django.db.models.fields.CharField')(max_length=64, null=True, blank=True)),
             ('direct_mgr', self.gf('django.db.models.fields.CharField')(max_length=16)),
-            ('region', self.gf('django.db.models.fields.CharField')(max_length=64)),
-            ('country', self.gf('django.db.models.fields.CharField')(max_length=64)),
-            ('state', self.gf('django.db.models.fields.CharField')(max_length=64)),
-            ('city', self.gf('django.db.models.fields.CharField')(max_length=64)),
-            ('primary_role', self.gf('django.db.models.fields.CharField')(max_length=64)),
-            ('role_catagory', self.gf('django.db.models.fields.CharField')(max_length=64)),
-            ('department', self.gf('django.db.models.fields.CharField')(max_length=16)),
+            ('region', self.gf('django.db.models.fields.CharField')(max_length=64, null=True, blank=True)),
+            ('country', self.gf('django.db.models.fields.CharField')(max_length=64, null=True, blank=True)),
+            ('state', self.gf('django.db.models.fields.CharField')(max_length=64, null=True, blank=True)),
+            ('city', self.gf('django.db.models.fields.CharField')(max_length=64, null=True, blank=True)),
+            ('primary_role', self.gf('django.db.models.fields.CharField')(max_length=64, null=True, blank=True)),
+            ('role_catagory', self.gf('django.db.models.fields.CharField')(max_length=64, null=True, blank=True)),
+            ('department', self.gf('django.db.models.fields.CharField')(max_length=32)),
         ))
         db.send_create_signal(u'IoTSSG', ['Employee'])
 
-        # Adding model 'Program'
-        db.create_table(u'IoTSSG_program', (
+        # Adding model 'Project'
+        db.create_table(u'IoTSSG_project', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=32)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=32)),
             ('clarity_id', self.gf('django.db.models.fields.CharField')(unique=True, max_length=16)),
             ('category', self.gf('django.db.models.fields.CharField')(max_length=16, null=True, blank=True)),
             ('description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('fcs_target', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
             ('fcs_commit', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
             ('fcs_current', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
             ('ec', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
             ('cc', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
             ('created_on', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
             ('health', self.gf('django.db.models.fields.CharField')(max_length=16)),
-            ('created_by', self.gf('django.db.models.fields.CharField')(max_length=16)),
+            ('health_schedule', self.gf('django.db.models.fields.CharField')(max_length=16, null=True)),
+            ('health_resources', self.gf('django.db.models.fields.CharField')(max_length=16, null=True)),
+            ('health_budget', self.gf('django.db.models.fields.CharField')(max_length=16, null=True)),
+            ('health_technical', self.gf('django.db.models.fields.CharField')(max_length=16, null=True)),
+            ('created_by', self.gf('django.db.models.fields.related.ForeignKey')(default=None, related_name='+', null=True, blank=True, to=orm['IoTSSG.Employee'])),
             ('lead', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='+', null=True, to=orm['IoTSSG.Employee'])),
             ('executive_sponsor', self.gf('django.db.models.fields.CharField')(max_length=16, null=True, blank=True)),
             ('overview', self.gf('django.db.models.fields.CharField')(max_length=16, null=True, blank=True)),
@@ -51,23 +57,39 @@ class Migration(SchemaMigration):
             ('owner', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='+', null=True, to=orm['IoTSSG.Employee'])),
             ('phase', self.gf('django.db.models.fields.CharField')(default='UNDEFINED', max_length=16)),
         ))
-        db.send_create_signal(u'IoTSSG', ['Program'])
+        db.send_create_signal(u'IoTSSG', ['Project'])
+
+        # Adding model 'Task'
+        db.create_table(u'IoTSSG_task', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('task_id', self.gf('django.db.models.fields.CharField')(max_length=16, null=True, blank=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=16, null=True, blank=True)),
+            ('milestone', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('status', self.gf('django.db.models.fields.CharField')(max_length=16, null=True, blank=True)),
+            ('percent_complete', self.gf('django.db.models.fields.FloatField')()),
+            ('start_date', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
+            ('end_date', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
+            ('created_date', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
+            ('last_updated', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
+            ('project', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['IoTSSG.Project'])),
+            ('last_updated_by', self.gf('django.db.models.fields.CharField')(max_length=16, null=True, blank=True)),
+        ))
+        db.send_create_signal(u'IoTSSG', ['Task'])
 
         # Adding model 'Allocation'
         db.create_table(u'IoTSSG_allocation', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('program', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['IoTSSG.Program'])),
+            ('program', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['IoTSSG.Project'])),
             ('employee', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['IoTSSG.Employee'])),
-            ('fiscal_month', self.gf('django.db.models.fields.DateField')()),
-            ('fte_total', self.gf('django.db.models.fields.PositiveIntegerField')()),
-            ('generated_date', self.gf('django.db.models.fields.DateField')()),
+            ('date', self.gf('django.db.models.fields.DateField')()),
+            ('fte_total', self.gf('django.db.models.fields.FloatField')()),
         ))
         db.send_create_signal(u'IoTSSG', ['Allocation'])
 
         # Adding model 'Bug'
         db.create_table(u'IoTSSG_bug', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('program', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['IoTSSG.Program'])),
+            ('program', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['IoTSSG.Project'])),
             ('bug_id', self.gf('django.db.models.fields.CharField')(max_length=64, db_index=True)),
             ('manager_id', self.gf('django.db.models.fields.CharField')(max_length=16, db_index=True)),
             ('entry_date', self.gf('django.db.models.fields.DateTimeField')()),
@@ -103,7 +125,7 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('topic', self.gf('django.db.models.fields.CharField')(max_length=32)),
             ('meeting', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['IoTSSG.Meeting'])),
-            ('program', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['IoTSSG.Program'])),
+            ('program', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['IoTSSG.Project'])),
             ('summary', self.gf('django.db.models.fields.CharField')(max_length=256)),
             ('notes', self.gf('django.db.models.fields.CharField')(max_length=256)),
         ))
@@ -123,8 +145,11 @@ class Migration(SchemaMigration):
         # Deleting model 'Employee'
         db.delete_table(u'IoTSSG_employee')
 
-        # Deleting model 'Program'
-        db.delete_table(u'IoTSSG_program')
+        # Deleting model 'Project'
+        db.delete_table(u'IoTSSG_project')
+
+        # Deleting model 'Task'
+        db.delete_table(u'IoTSSG_task')
 
         # Deleting model 'Allocation'
         db.delete_table(u'IoTSSG_allocation')
@@ -148,12 +173,11 @@ class Migration(SchemaMigration):
     models = {
         u'IoTSSG.allocation': {
             'Meta': {'object_name': 'Allocation'},
+            'date': ('django.db.models.fields.DateField', [], {}),
             'employee': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['IoTSSG.Employee']"}),
-            'fiscal_month': ('django.db.models.fields.DateField', [], {}),
-            'fte_total': ('django.db.models.fields.PositiveIntegerField', [], {}),
-            'generated_date': ('django.db.models.fields.DateField', [], {}),
+            'fte_total': ('django.db.models.fields.FloatField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'program': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['IoTSSG.Program']"})
+            'program': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['IoTSSG.Project']"})
         },
         u'IoTSSG.bug': {
             'Meta': {'object_name': 'Bug'},
@@ -165,7 +189,7 @@ class Migration(SchemaMigration):
             'manager_id': ('django.db.models.fields.CharField', [], {'max_length': '16', 'db_index': 'True'}),
             'month_start': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'product': ('django.db.models.fields.CharField', [], {'max_length': '36'}),
-            'program': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['IoTSSG.Program']"}),
+            'program': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['IoTSSG.Project']"}),
             'severity': ('django.db.models.fields.IntegerField', [], {}),
             'status': ('django.db.models.fields.CharField', [], {'max_length': '8'})
         },
@@ -178,20 +202,21 @@ class Migration(SchemaMigration):
         },
         u'IoTSSG.employee': {
             'Meta': {'object_name': 'Employee'},
-            'city': ('django.db.models.fields.CharField', [], {'max_length': '64'}),
-            'country': ('django.db.models.fields.CharField', [], {'max_length': '64'}),
-            'department': ('django.db.models.fields.CharField', [], {'max_length': '16'}),
+            'city': ('django.db.models.fields.CharField', [], {'max_length': '64', 'null': 'True', 'blank': 'True'}),
+            'country': ('django.db.models.fields.CharField', [], {'max_length': '64', 'null': 'True', 'blank': 'True'}),
+            'department': ('django.db.models.fields.CharField', [], {'max_length': '32'}),
             'direct_mgr': ('django.db.models.fields.CharField', [], {'max_length': '16'}),
             'emptype': ('django.db.models.fields.CharField', [], {'max_length': '16'}),
-            'first_name': ('django.db.models.fields.CharField', [], {'max_length': '32'}),
+            'first_name': ('django.db.models.fields.CharField', [], {'max_length': '32', 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'job_title': ('django.db.models.fields.CharField', [], {'max_length': '64'}),
-            'last_name': ('django.db.models.fields.CharField', [], {'max_length': '32'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '32'}),
-            'primary_role': ('django.db.models.fields.CharField', [], {'max_length': '64'}),
-            'region': ('django.db.models.fields.CharField', [], {'max_length': '64'}),
-            'role_catagory': ('django.db.models.fields.CharField', [], {'max_length': '64'}),
-            'state': ('django.db.models.fields.CharField', [], {'max_length': '64'}),
+            'job_title': ('django.db.models.fields.CharField', [], {'max_length': '64', 'null': 'True', 'blank': 'True'}),
+            'last_name': ('django.db.models.fields.CharField', [], {'max_length': '32', 'null': 'True', 'blank': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '64', 'null': 'True', 'blank': 'True'}),
+            'portrait': ('django.db.models.fields.files.ImageField', [], {'default': "'images/portraits/default.jpg'", 'max_length': '100'}),
+            'primary_role': ('django.db.models.fields.CharField', [], {'max_length': '64', 'null': 'True', 'blank': 'True'}),
+            'region': ('django.db.models.fields.CharField', [], {'max_length': '64', 'null': 'True', 'blank': 'True'}),
+            'role_catagory': ('django.db.models.fields.CharField', [], {'max_length': '64', 'null': 'True', 'blank': 'True'}),
+            'state': ('django.db.models.fields.CharField', [], {'max_length': '64', 'null': 'True', 'blank': 'True'}),
             'user_id': ('django.db.models.fields.CharField', [], {'max_length': '16'})
         },
         u'IoTSSG.meeting': {
@@ -207,32 +232,52 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'meeting': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['IoTSSG.Meeting']"}),
             'notes': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            'program': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['IoTSSG.Program']"}),
+            'program': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['IoTSSG.Project']"}),
             'summary': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
             'topic': ('django.db.models.fields.CharField', [], {'max_length': '32'})
         },
-        u'IoTSSG.program': {
-            'Meta': {'object_name': 'Program'},
+        u'IoTSSG.project': {
+            'Meta': {'object_name': 'Project'},
             'category': ('django.db.models.fields.CharField', [], {'max_length': '16', 'null': 'True', 'blank': 'True'}),
             'cc': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             'clarity_id': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '16'}),
             'comments': ('django.db.models.fields.CharField', [], {'max_length': '16', 'null': 'True', 'blank': 'True'}),
-            'created_by': ('django.db.models.fields.CharField', [], {'max_length': '16'}),
+            'created_by': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'related_name': "'+'", 'null': 'True', 'blank': 'True', 'to': u"orm['IoTSSG.Employee']"}),
             'created_on': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'ec': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             'executive_sponsor': ('django.db.models.fields.CharField', [], {'max_length': '16', 'null': 'True', 'blank': 'True'}),
             'fcs_commit': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             'fcs_current': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
+            'fcs_target': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             'health': ('django.db.models.fields.CharField', [], {'max_length': '16'}),
+            'health_budget': ('django.db.models.fields.CharField', [], {'max_length': '16', 'null': 'True'}),
+            'health_resources': ('django.db.models.fields.CharField', [], {'max_length': '16', 'null': 'True'}),
+            'health_schedule': ('django.db.models.fields.CharField', [], {'max_length': '16', 'null': 'True'}),
+            'health_technical': ('django.db.models.fields.CharField', [], {'max_length': '16', 'null': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'lead': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': u"orm['IoTSSG.Employee']"}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '32'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '32'}),
             'overview': ('django.db.models.fields.CharField', [], {'max_length': '16', 'null': 'True', 'blank': 'True'}),
             'owner': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': u"orm['IoTSSG.Employee']"}),
             'phase': ('django.db.models.fields.CharField', [], {'default': "'UNDEFINED'", 'max_length': '16'}),
             'releases': ('django.db.models.fields.CharField', [], {'max_length': '16', 'null': 'True', 'blank': 'True'}),
             'technical_description': ('django.db.models.fields.CharField', [], {'max_length': '16', 'null': 'True', 'blank': 'True'})
+        },
+        u'IoTSSG.task': {
+            'Meta': {'object_name': 'Task'},
+            'created_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
+            'end_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'last_updated': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
+            'last_updated_by': ('django.db.models.fields.CharField', [], {'max_length': '16', 'null': 'True', 'blank': 'True'}),
+            'milestone': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '16', 'null': 'True', 'blank': 'True'}),
+            'percent_complete': ('django.db.models.fields.FloatField', [], {}),
+            'project': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['IoTSSG.Project']"}),
+            'start_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
+            'status': ('django.db.models.fields.CharField', [], {'max_length': '16', 'null': 'True', 'blank': 'True'}),
+            'task_id': ('django.db.models.fields.CharField', [], {'max_length': '16', 'null': 'True', 'blank': 'True'})
         }
     }
 

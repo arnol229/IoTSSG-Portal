@@ -225,26 +225,43 @@ $(window).load(function(){
                   <thead>
                   <tr>
                       <th data-field="Name">Name</th>
+                      <th data-field="Product-Family">Product Family</th>
                       <th data-field="Clarity-ID">Clarity ID</th>
-                      <th data-field="Status">Health</th>
                       <th data-field="Phase">Phase</th>
+                      <th data-field="FCS-Target">FCS Target</th>
+                      <th data-field="FCS-Commit">FCS Commit</th>
+                      <th data-field="FCS-Current">FCS Current</th>
+                      <th data-field="Owner">Owner</th>
+                      <th data-field="Schedule">Schedule</th>
+                      <th data-field="Resources">Resources</th>
+                      <th data-field="Budget">Budget</th>
+                      <th data-field="Technical">Technical</th>
                   </tr>
                   {% for program in programs %}
                   <tr id="{{ program.name }}"
                   {% if program.health == 'RED' %}
                   class="danger">
-                  {% elif program.health == 'WHITE' %}
-                  >
                   {% elif program.health == 'GREEN' %}
                   class="success">
+                  {% else %}
+                  >
                   {% endif %}
                       <td><a href=
                             "{% url 'program_list' %}{{ program.name }}">
                             <i class="glyphicon glyphicon-th"></i>
                             {{ program.name }}</a></td>
+                      <td>{{ program.product_family }}</td>
                       <td>{{ program.clarity_id }}</td>
-                      <td>{{ program.health }}</td>
                       <td>{{ program.phase }}</td>
+                      <td>{{ program.fcs_target }}</td>
+                      <td>{{ program.fcs_commit }}</td>
+                      <td>{{ program.fcs_current }}</td>
+                      <td>{{ program.owner }}</td>
+                      <td>{{ program.health_schedule }}</td>
+                      <td>{{ program.health_resources }}</td>
+                      <td>{{ program.health_budget }}</td>
+                      <td>{{ program.health_technical }}</td>
+
                   </tr>
                   {% endfor %}
                   </thead>

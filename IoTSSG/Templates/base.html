@@ -34,61 +34,59 @@ $('[data-toggle=collapse]').click(function(){
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <button class="navbar-toggle" data-target=".navbar-collapse"
+            <!-- <button class="navbar-toggle" data-target=".navbar-collapse"
             data-toggle="collapse" type="button"><span class="sr-only">Toggle
             navigation</span> <span class="icon-bar"></span> <span class=
-            "icon-bar"></span> <span class="icon-bar"></span></button>
-            <a class="navbar-brand" href=
-            "{% url 'IoTSSG.views.home' %}">IOTSSG Web Portal</a>
-        </div>
+            "icon-bar"></span> <span class="icon-bar"></span></button> -->
+            <a class="navbar-brand" href="/">IOTSSG Web Portal</a>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown"><a class="navbar-brand dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false">About IoTSSG<span class="caret"></span></a></li>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a href="{% url 'IoTSSG.views.about' %}">About IoT</a>
+                        </li>
 
 
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="{% url 'IoTSSG.views.about' %}">About
-                    IoTSSG</a>
-                </li>
+                        <li>
+                            <a href="{% url 'IoTSSG.views.meeting' %}">Meeting
+                            Center</a>
+                        </li>
 
 
-                <li>
-                    <a href="{% url 'IoTSSG.views.meeting' %}">Meeting
-                    Center</a>
-                </li>
+                        <li>
+                            <a href=
+                            "{% url 'IoTSSG.views.program_list' %}">Programs</a>
+                        </li>
 
 
-                <li>
-                    <a href=
-                    "{% url 'IoTSSG.views.program_list' %}">Programs</a>
-                </li>
+                        <li>
+                            <a href="{% url 'IoTSSG.views.roster' %}">Org
+                            Chart</a>
+                        </li>
 
 
-                <li>
-                    <a href="{% url 'IoTSSG.views.roster' %}">Org
-                    Chart</a>
-                </li>
+                        <li>
+                            <a href=
+                            "{% url 'IoTSSG.views.community' %}">Community</a>
+                        </li>
 
 
-                <li>
-                    <a href=
-                    "{% url 'IoTSSG.views.community' %}">Community</a>
-                </li>
+                        <li>
+                            <a href=
+                            "{% url 'IoTSSG.views.analytics' %}">Analytics</a>
+                        </li>
 
 
-                <li>
-                    <a href=
-                    "{% url 'IoTSSG.views.analytics' %}">Analytics</a>
-                </li>
-
-
-                <li>
-                    <a href="{% url 'IoTSSG.views.home' %}">Help</a>
-                </li>
-
-                <li>
-                    <a href="{% url 'IoTSSG.views.log_out' %}">Log Out</a>
-                </li>
-            </ul>
+                        <li>
+                            <a href="{% url 'IoTSSG.views.home' %}">Help</a>
+                        </li>
+                    </ul>
+                </ul>
+            <div class="navbar-brand navbar-right">
+                <a href="{% url 'IoTSSG.views.log_out' %}">Log Out</a>
+            </div>
         </div>
     </div>
 </nav>

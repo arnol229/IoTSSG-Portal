@@ -1,81 +1,107 @@
 from django.db import models
 from choices import HEALTH_CHOICES, PHASE_CHOICES
+from datetime import datetime
 
 default_phase = "Unknown"
 
 class Employee(models.Model):
 	user_id = models.CharField(max_length=16)
-	name = models.CharField(max_length=32)
-	last_name = models.CharField(max_length=32)
-	first_name = models.CharField(max_length=32)
+	portrait = models.ImageField(upload_to='images/portraits/',default='images/portraits/default.jpg')
+	name = models.CharField(max_length=64,blank=True,null=True)
+	last_name = models.CharField(max_length=32,blank=True,null=True)
+	first_name = models.CharField(max_length=32,blank=True,null=True)
 	emptype = models.CharField(max_length=16)
-	job_title = models.CharField(max_length=64)
+	job_title = models.CharField(max_length=64,blank=True,null=True)
 	direct_mgr = models.CharField(max_length=16)
-	region = models.CharField(max_length=64)
-	country = models.CharField(max_length=64)
-	state = models.CharField(max_length=64)
-	city = models.CharField(max_length=64)
-	primary_role = models.CharField(max_length=64)
-	role_catagory = models.CharField(max_length=64)
-	department = models.CharField(max_length=16)
+	region = models.CharField(max_length=64,blank=True,null=True)
+	country = models.CharField(max_length=64,blank=True,null=True)
+	state = models.CharField(max_length=64,blank=True,null=True)
+	city = models.CharField(max_length=64,blank=True,null=True)
+	primary_role = models.CharField(max_length=64,blank=True,null=True)
+	role_catagory = models.CharField(max_length=64,blank=True,null=True)
+	department = models.CharField(max_length=32)
 
 	def __unicode__(self):
 		return self.user_id# str(self.last_name) +", " + str(self.first_name)
 
-class Program(models.Model):
-	# Required Fields
-	name = models.CharField(max_length=32,unique=True)
+	def get_current_allocation_summary(self):
+		return Allocation.objects.filter(employee=self,date__month=datetime.now().month,date__year=datetime.now().year)
+
+class Project(models.Model):
+	# General Required Fields
+	name = models.CharField(max_length=32)
 	clarity_id = models.CharField(max_length=16,unique=True)
-	
 	category = models.CharField(max_length=16,blank=True,null=True)
 	description = models.TextField(blank=True,null=True)
-	# Date Fields 
+
+	# Dates
+	fcs_target = models.DateField(blank=True,null=True)
 	fcs_commit = models.DateField(blank=True,null=True)
 	fcs_current = models.DateField(blank=True,null=True)
 	ec = models.DateField(blank=True,null=True)
 	cc = models.DateField(blank=True,null=True)
 	created_on = models.DateField(blank=True,null=True)
-
+	# Health status
 	health = models.CharField(max_length=16,choices=HEALTH_CHOICES)
-	created_by = models.CharField(max_length=16,editable=False)
-	
+	health_schedule = models.CharField(max_length=16,choices=HEALTH_CHOICES,null=True)
+	health_resources = models.CharField(max_length=16,choices=HEALTH_CHOICES,null=True)
+	health_budget = models.CharField(max_length=16,choices=HEALTH_CHOICES,null=True)
+	health_technical = models.CharField(max_length=16,choices=HEALTH_CHOICES,null=True)
+	# People
+	created_by = models.ForeignKey(Employee,related_name='+',blank=True,null=True,default=None)
 	lead = models.ForeignKey(Employee,related_name='+',blank=True,null=True)
 	executive_sponsor = models.CharField(max_length=16,blank=True,null=True)
+	# Text
 	overview = models.CharField(max_length=16,blank=True,null=True)
 	technical_description = models.CharField(max_length=16,blank=True,null=True)
 	releases = models.CharField(max_length=16,blank=True,null=True)
 	comments = models.CharField(max_length=16,blank=True,null=True)
 	owner = models.ForeignKey(Employee,related_name='+',blank=True,null=True)
-	phase = models.CharField(max_length=16,default="UNDEFINED",choices=PHASE_CHOICES)#include options to choose from
+	phase = models.CharField(max_length=16,null=True,blank=True)#include options to choose from
 
 	def __unicode__(self):
 		return self.name
 
 	def get_current_allocation_total(self):
-		return Allocation.objects.filter(program=self).aggregate(models.Sum('fte_total')).get('fte_total__sum', 0.00)
+		return Allocation.objects.filter(program=self,date__month=datetime.now().month,date__year=datetime.now().year).aggregate(models.Sum('fte_total')).get('fte_total__sum', 0.00)
 
 	def get_allocation_totals(self):
-		return Allocation.objects.filter(program=self).values('fiscal_month').annotate(models.Sum('fte_total')).order_by('fiscal_month')
+		return Allocation.objects.filter(program=self).values('date').annotate(models.Sum('fte_total')).order_by('date')
 
 	def get_active_roster(self):
-		return Allocation.objects.values('fiscal_month').annotate(models.Sum('fte_total')).get('fte_total__sum', 0.00)
+		return Allocation.objects.values('date').annotate(models.Sum('fte_total')).get('fte_total__sum', 0.00)
 
 	def get_fields(self):
 		return [(field.name, field.value_to_string(self)) for field in Program._meta.fields]
 
-	def bug_count(self):
-		return Bug.objects.all().count()
+	def open_bug_count(self):
+		return Bug.objects.filter(program=self,is_open=True).count()
+
+class Task(models.Model):
+	## Generals
+	task_id = models.CharField(max_length=16,blank=True,null=True)
+	name = models.CharField(max_length=16,blank=True,null=True)
+	milestone = models.BooleanField(default=False)
+	status = models.CharField(max_length=16,blank=True,null=True)
+	percent_complete = models.FloatField()
+
+	## DateFields
+	start_date = models.DateField(blank=True,null=True)
+	end_date = models.DateField(blank=True,null=True)
+	created_date = models.DateField(blank=True,null=True)
+	last_updated = models.DateField(blank=True,null=True)
+	## Foreign Keys
+	project = models.ForeignKey(Project,unique=False)
+	last_updated_by = models.CharField(max_length=16,blank=True,null=True)
 
 class Allocation(models.Model):
-	program = models.ForeignKey(Program)
-	employee = models.ForeignKey(Employee)
-	fiscal_month = models.DateField()
-	fte_total = models.PositiveIntegerField()
-	# to archive allocation points #
-	generated_date = models.DateField()
+	program = models.ForeignKey(Project,unique=False)
+	employee = models.ForeignKey(Employee,unique=False)
+	date = models.DateField()
+	fte_total = models.FloatField()
 
 class Bug(models.Model):
-	program = models.ForeignKey(Program)
+	program = models.ForeignKey(Project,unique=False)
 	bug_id = models.CharField(max_length=64, db_index=True)
 	manager_id = models.CharField(max_length=16, db_index=True)
 	entry_date = models.DateTimeField(auto_now=False)
@@ -110,7 +136,7 @@ class Meeting(models.Model):
 class Minute(models.Model):
 	topic = models.CharField(max_length=32)
 	meeting = models.ForeignKey(Meeting)
-	program = models.ForeignKey(Program)
+	program = models.ForeignKey(Project)
 	summary = models.CharField(max_length=256)
 	notes = models.CharField(max_length=256)
 
